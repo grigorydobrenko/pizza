@@ -1,14 +1,22 @@
 import './App.css';
-
 import './scss/app.scss'
 import Header from "./components/Header";
 import Categories from "./components/Categories";
 import Item from "./components/Item";
-import pizzaItems from "./assets/pizzaItems.json"
 import Sort from "./components/Sort";
+import {useEffect, useState} from "react";
 
 
 function App() {
+
+    const [pizzaItems, setPizzaItems] = useState([])
+
+    useEffect(() => {
+        fetch('https://633ffea8d1fcddf69cae7938.mockapi.io/items')
+            .then(res => res.json())
+            .then(res => setPizzaItems(res))
+    }, [])
+
     return (
         <div className="App">
             <div className="wrapper">
