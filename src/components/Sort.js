@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 const Sort = () => {
     const arrSort = ['популярности', 'цене', 'калорийности']
 
-    const [isToggle, setIsToggle] = useState(true)
+    const [isToggle, setIsToggle] = useState(false)
     const [currentItem, setCurrentItem] = useState(arrSort[0])
 
     const onClickHandler = (i) => {
