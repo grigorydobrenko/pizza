@@ -1,15 +1,21 @@
 import React, {useState} from 'react';
 
-const Sort = () => {
-    const arrSort = ['популярности', 'цене', 'калорийности']
+const Sort = ({value, setSortType}) => {
+    const arrSort = [{name: 'популярности (по убыванию)', sortName: 'rating'},
+        {name: 'популярности (по возрастанию)', sortName: '-rating'},
+        {name: 'цене (по убыванию)', sortName: 'price'},
+        {name: 'цене (по возрастанию)', sortName: '-price'},
+        {name: 'алфавиту (по убыванию)', sortName: 'title'},
+        {name: 'алфавиту (по возрастанию)', sortName: '-title'}
+    ]
 
     const [isToggle, setIsToggle] = useState(false)
-    const [currentItem, setCurrentItem] = useState(arrSort[0])
 
-    const onClickHandler = (i) => {
-        setCurrentItem(arrSort[i])
+    const onClickHandler = (obj) => {
+        setSortType(obj)
         setIsToggle(false)
     }
+
 
     return (
         <div className="sort">
@@ -27,16 +33,16 @@ const Sort = () => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setIsToggle(!isToggle)}>{currentItem}</span>
+                <span onClick={() => setIsToggle(!isToggle)}>{value.name}</span>
             </div>
             {isToggle &&
                 <div className="sort__popup">
                     <ul>
-                        {arrSort.map((el, i) => <li
+                        {arrSort.map((obj, i) => <li
                             key={i}
-                            onClick={() => onClickHandler(i)}
-                            className={el === currentItem ? 'active' : ''}
-                        >{el}</li>)}
+                            onClick={() => onClickHandler(obj)}
+                            className={obj.name === value.name ? 'active' : ''}
+                        >{obj.name}</li>)}
                     </ul>
                 </div>
             }
