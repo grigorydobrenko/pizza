@@ -3,13 +3,14 @@ import Categories from "../Categories";
 import Sort from "../Sort";
 import Skeleton from "../pizza-item/Skeleton";
 import Item from "../pizza-item/Item";
+import Pagination from "../pagination";
 
 const Main = ({inputValue}) => {
     const [pizzaItems, setPizzaItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [categoryId, setCategoryId] = useState(0)
     const [sortType, setSortType] = useState({name: 'популярности', sortName: 'rating'})
-
+    const [currentPage, setCurrentPage] = useState(1)
 
     useEffect(() => {
         setIsLoading(true)
@@ -19,17 +20,18 @@ const Main = ({inputValue}) => {
         const isAsc = sortType.sortName[0] === '-' ? 'asc' : 'desc'
         const sort = `sortBy=${sortType.sortName.replace('-', '')}&order=${isAsc}`
 
-        const search = inputValue? `search=${inputValue}` : ''
+        const search = inputValue ? `search=${inputValue}` : ''
 
+        const content = categoryId === 0 ? `page=${currentPage}&limit=4${category}&${sort}&${search}` : `${category}&${sort}&${search}`
 
-        fetch(`https://633ffea8d1fcddf69cae7938.mockapi.io/items?${category}&${sort}&${search}`)
+        fetch(`https://633ffea8d1fcddf69cae7938.mockapi.io/items?${content}`)
             .then(res => res.json())
             .then(res => {
                 setPizzaItems(res)
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
-    }, [categoryId, sortType, inputValue])
+    }, [categoryId, sortType, inputValue, currentPage])
 
 
     const skeleton = [...new Array(9)].map((_, index) => <Skeleton key={index}/>)
@@ -52,6 +54,7 @@ const Main = ({inputValue}) => {
                     pizzas
                 }
             </div>
+            <Pagination setCurrentPage={setCurrentPage} categoryId={categoryId}/>
         </div>
 
     );
