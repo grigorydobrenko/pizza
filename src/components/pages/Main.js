@@ -4,13 +4,17 @@ import Sort from "../Sort";
 import Skeleton from "../pizza-item/Skeleton";
 import Item from "../pizza-item/Item";
 import Pagination from "../pagination";
+import {SearchContext} from "../../App";
 
-const Main = ({inputValue}) => {
+const Main = () => {
     const [pizzaItems, setPizzaItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [categoryId, setCategoryId] = useState(0)
     const [sortType, setSortType] = useState({name: 'популярности', sortName: 'rating'})
     const [currentPage, setCurrentPage] = useState(1)
+
+    const {searchValue} = React.useContext(SearchContext)
+
 
     useEffect(() => {
         setIsLoading(true)
@@ -20,7 +24,7 @@ const Main = ({inputValue}) => {
         const isAsc = sortType.sortName[0] === '-' ? 'asc' : 'desc'
         const sort = `sortBy=${sortType.sortName.replace('-', '')}&order=${isAsc}`
 
-        const search = inputValue ? `search=${inputValue}` : ''
+        const search = searchValue ? `search=${searchValue}` : ''
 
         const content = categoryId === 0 ? `page=${currentPage}&limit=4${category}&${sort}&${search}` : `${category}&${sort}&${search}`
 
@@ -31,7 +35,7 @@ const Main = ({inputValue}) => {
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
-    }, [categoryId, sortType, inputValue, currentPage])
+    }, [categoryId, sortType, searchValue, currentPage])
 
 
     const skeleton = [...new Array(9)].map((_, index) => <Skeleton key={index}/>)

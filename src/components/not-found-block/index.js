@@ -2,7 +2,6 @@ import React from 'react';
 import img from "../../assets/img/cover.86b1db55.jpg";
 import styles from './notFoundBlock.module.scss'
 
-console.log(styles)
 
 const Index = () => {
     return (
