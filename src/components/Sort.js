@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {setSortType} from "../redux/slices/filterSlice";
 
-const Sort = ({value, setSortType}) => {
+const Sort = () => {
+    const sortType = useSelector((state) => state.filter.sortType)
+    const dispatch = useDispatch()
+
+
     const arrSort = [{name: 'популярности (по убыванию)', sortName: 'rating'},
         {name: 'популярности (по возрастанию)', sortName: '-rating'},
         {name: 'цене (по убыванию)', sortName: 'price'},
@@ -12,7 +18,7 @@ const Sort = ({value, setSortType}) => {
     const [isToggle, setIsToggle] = useState(false)
 
     const onClickHandler = (obj) => {
-        setSortType(obj)
+        dispatch(setSortType(obj))
         setIsToggle(false)
     }
 
@@ -33,7 +39,7 @@ const Sort = ({value, setSortType}) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setIsToggle(!isToggle)}>{value.name}</span>
+                <span onClick={() => setIsToggle(!isToggle)}>{sortType.name}</span>
             </div>
             {isToggle &&
                 <div className="sort__popup">
@@ -41,7 +47,7 @@ const Sort = ({value, setSortType}) => {
                         {arrSort.map((obj, i) => <li
                             key={i}
                             onClick={() => onClickHandler(obj)}
-                            className={obj.name === value.name ? 'active' : ''}
+                            className={obj.name === sortType.name ? 'active' : ''}
                         >{obj.name}</li>)}
                     </ul>
                 </div>

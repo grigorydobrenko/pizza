@@ -5,15 +5,22 @@ import Skeleton from "../pizza-item/Skeleton";
 import Item from "../pizza-item/Item";
 import Pagination from "../pagination";
 import {SearchContext} from "../../App";
+import {useDispatch, useSelector} from "react-redux";
+import {setCategoryId} from "../../redux/slices/filterSlice";
 
 const Main = () => {
     const [pizzaItems, setPizzaItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const [categoryId, setCategoryId] = useState(0)
-    const [sortType, setSortType] = useState({name: 'популярности', sortName: 'rating'})
     const [currentPage, setCurrentPage] = useState(1)
 
     const {searchValue} = React.useContext(SearchContext)
+
+    const {categoryId, sortType} = useSelector(state => state.filter)
+    const dispatch = useDispatch()
+
+    const handler = (id) => {
+        dispatch(setCategoryId(id))
+    }
 
 
     useEffect(() => {
@@ -48,8 +55,8 @@ const Main = () => {
     return (
         <div className="container">
             <div className="content__top">
-                <Categories value={categoryId} setCategoryId={setCategoryId}/>
-                <Sort value={sortType} setSortType={setSortType}/>
+                <Categories value={categoryId} setCategoryId={handler}/>
+                <Sort/>
             </div>
             <h2 className="content__title">Пицца</h2>
             <div className="content__items">
